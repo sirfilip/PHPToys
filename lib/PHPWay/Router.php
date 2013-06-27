@@ -10,7 +10,7 @@ class Router
 	
 	public function __construct($env, $routes)
 	{
-		$this->_path = rtrim($env['PATH_INFO'], '/');
+		$this->_path = '/'.trim($env['PATH_INFO'], '/');
 		$this->_method = $env['REQUEST_METHOD'];
 		$this->_routes = $routes;
 		$this->validate();

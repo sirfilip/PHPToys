@@ -2,10 +2,11 @@
 use \PHPWay\Router;
 use \PHPWay\Response;
 
-$routes = require_once APP_PATH.'/routes.php';
+$routes = require_once APP_DIR.'/routes.php';
 $router = new Router($_SERVER, $routes);
 
 $result = $router->detect();
+
 
 if (is_null($result)) // show 404 page 
 {
