@@ -13,11 +13,25 @@ class Response
 
     public static function show_404($message = '')
     {
+        $response = static::page_404($message);
+        $response->process();
+    }
+
+    public static function page_404($message = '')
+    {
         $message = $message ? $message : 'Page not found';
         $response = new static($message);
+        $response->set_status(404);
+        return $response;
+    }
+
+    public static function error($params = array())
+    {
+        $response = new static(json_encode($params));
         $response
-            ->set_status(404)
-            ->process();
+            ->set_status(400)
+            ->header('Content-type', 'application/json');
+        return $response;
     }
 
     public static function json($content)
@@ -25,8 +39,8 @@ class Response
         $response = new static;
         $response
             ->header('Content-type', 'application/json')
-            ->body(json_encode($content))
-            ->process();
+            ->body(json_encode($content));
+        return $response;
     }
 
     public function __construct($body = '')

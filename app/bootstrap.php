@@ -3,7 +3,8 @@ use \PHPWay\Router;
 use \PHPWay\Response;
 use \PHPWay\DB;
 
-DB::config('default', "sqlite:".APP_DIR."/db/dev.db");
+DB::config('default', "sqlite:".PROJECT_DIR."/db/dev.db");
+
 
 $routes = require_once APP_DIR.'/routes.php';
 $router = new Router($_SERVER, $routes);
