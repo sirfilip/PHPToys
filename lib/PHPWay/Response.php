@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace PHPWay;
 
 
@@ -11,12 +9,23 @@ class Response
     private $_headers = array();
     private $_status = 200;
 
+    /**
+     * Shows a 404 page with a given message.
+     * 
+     * @param String $message
+     */
     public static function show_404($message = '')
     {
         $response = static::page_404($message);
         $response->process();
     }
 
+    /**
+     * Acts as a factory for a 404 page response.
+     * 
+     * @param String $message
+     * @return Response object
+     */
     public static function page_404($message = '')
     {
         $message = $message ? $message : 'Page not found';
@@ -25,6 +34,14 @@ class Response
         return $response;
     }
 
+    /**
+     * Generates error response object.
+     * 
+     * It accepts params as array and it encodes it to json.
+     * 
+     * @param array $params
+     * @return Response an error response
+     */
     public static function error($params = array())
     {
         $response = new static(json_encode($params));
@@ -34,6 +51,12 @@ class Response
         return $response;
     }
 
+    /**
+     * Generates json response object.
+     * 
+     * @param array $content 
+     * @return Response json object
+     */
     public static function json($content)
     {
         $response = new static;
@@ -48,24 +71,50 @@ class Response
         $this->body($body);
     }
 
+    /**
+     * Status setter
+     * 
+     * @param integer $status
+     * @return Response self to enable chaining
+     */
     public function set_status($status)
     {
         $this->_status = $status;
         return $this;
     }
 
+    /**
+     * Header setter.
+     * 
+     * Sets header value that will be sent to the browser
+     * 
+     * @param String $key
+     * @param String $val
+     * @return Response self to enable chaining
+     */
     public function header($key, $val)
     {
         $this->_headers[$key] = $val;
         return $this;
     }
 
+    /**
+     * Body setter
+     * 
+     * @param String $body
+     * @return Response self to enable chaining
+     */
     public function body($body)
     {
         $this->_body = $body;
         return $this;
     }
 
+    /**
+     * Porcesses the response.
+     * 
+     * Send the status, headers and content and exit
+     */
     public function process()
     {
         $this->send_status();
@@ -74,6 +123,9 @@ class Response
         exit(0);
     }
 
+    /**
+     * Sends the correct status header based on the status number.
+     */
     private function send_status()
     {
         switch ($this->_status) 
@@ -125,6 +177,9 @@ class Response
         header($protocol . ' ' . $this->_status . ' ' . $text);
     }
 
+    /**
+     * Sends the headers of the response
+     */
     private function send_headers()
     {
         foreach ($this->_headers as $header => $val)
@@ -133,6 +188,9 @@ class Response
         }
     }
 
+    /**
+     * Echoes the content
+     */
     private function send_content()
     {
         echo $this->_body;

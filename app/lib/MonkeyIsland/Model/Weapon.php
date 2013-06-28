@@ -8,6 +8,11 @@ class Weapon extends Base
 {
     protected $_properties = array('name', 'type', 'power_level');
 
+    /**
+     * Fetches all weapons
+     * 
+     * @return array weapons
+     */
     public function all()
     {
         return $this->db()
@@ -15,13 +20,25 @@ class Weapon extends Base
                 ->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function get($id, $type)
+    /**
+     * Fetches weapon based on its id
+     * 
+     * @param int $id
+     * @return array weapon
+     */
+    public function get($id)
     {
         $stmt = $this->db()->prepare("SELECT * FROM weapons WHERE id=:id");
         $stmt->execute(array(':id' => $id));
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Creates new weapon
+     * 
+     * @param array $params
+     * @return array weapon
+     */
     public function create($params)
     {
         $params = $this->clean_params($params);
@@ -37,6 +54,13 @@ class Weapon extends Base
         return $params;
     }
 
+    /**
+     * Updates a weapon based on its id
+     * 
+     * @param int $id
+     * @param array $params
+     * @return array weapon
+     */
     public function update($id, $params)
     {
         $params = $this->clean_params($params);
@@ -56,6 +80,12 @@ class Weapon extends Base
         return $params;
     }
 
+    /**
+     * Deletes a weapon
+     * 
+     * @param int $id
+     * @return bool
+     */
     public function delete($id)
     {
         $stmt = $this->db()->prepare("DELETE FROM weapons WHERE id=:id");

@@ -8,6 +8,14 @@ class Router
 	private $_method;
 	private $_routes;
 	
+	/**
+	 * Router constructor.
+	 * 
+	 * Accepts $env and $routes array.
+	 * 
+	 * @param array $env
+	 * @param array $routes
+	 */
 	public function __construct($env, $routes)
 	{
 		$this->_path = '/'.trim($env['PATH_INFO'], '/');
@@ -16,6 +24,10 @@ class Router
 		$this->validate();
 	}
 	
+	/**
+	 * Detects a route based on the method and path.
+	 * @return array of two elements (callback and params) or NULL if not found
+	 */
 	public function detect()
 	{
 		$matcher = "{$this->_method} {$this->_path}";
@@ -32,7 +44,10 @@ class Router
 		return NULL;
 	}
 	
-	private function validate()
+	/**
+	 * Provides basic validation
+	 */ 
+	protected function validate()
 	{
 		if (! is_array($this->_routes)) throw new \Exception("Routes must be an array");
 	}

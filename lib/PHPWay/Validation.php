@@ -15,6 +15,11 @@ class Validation
 		$this->rules = $rules;
 	}
 	
+	/**
+	 * Triggers the validation.
+	 * 
+	 * @return bool validation success.
+	 */
 	public function validate()
 	{
 		foreach ($this->rules as $field => $rules)
@@ -25,11 +30,22 @@ class Validation
 		return empty($this->_errors);
 	}
 
+	/**
+	 * Fetches the validation errors if any.
+	 * 
+	 * @return array
+	 */
 	public function errors()
 	{
 		return $this->_errors;
 	}
 	
+	/**
+	 * Validates given field.
+	 * 
+	 * @param String $field name
+	 * @param String $rules
+	 */ 
 	protected function validate_field($field, $rules)
 	{
 		// example rule required|unique,tablename,id
@@ -44,6 +60,12 @@ class Validation
 		}
 	}
 	
+	/**
+	 * Checks if the field is present and that it is a non-empty or null value.
+	 * 
+	 * @param String $field name
+	 * @return bool
+	 */
 	protected function _required($field)
 	{
 		if (isset($this->fields[$field]) and $this->fields[$field] !== '' and $this->fields[$field] !== NULL)
