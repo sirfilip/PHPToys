@@ -8,7 +8,7 @@ return array(
      * Fetches all dog toys (List action)
      */
 	'GET /api/cuddly_toys/dogs' => function() {
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
 		return \PHPWay\Response::json($toy_model->dogs());
 	},
 
@@ -41,7 +41,7 @@ return array(
             'energy_level' => 'required',
         ));
         if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         $dog = $toy_model->create_dog($params);
         if ($dog) 
         {
@@ -65,7 +65,7 @@ return array(
             'energy_level' => 'required',
         ));
         if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         $dog = $toy_model->dog($id);
         if (! $dog) return \PHPWay\Response::page_404("Dog not found");
         return \PHPWay\Response::json($toy_model->update_dog($id, $params)); 
@@ -75,7 +75,7 @@ return array(
      * Destroys a dog resource. 
      */
     'DELETE /api/cuddly_toys/dogs/(\d+)' => function($id) {
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         $dog = $toy_model->dog($id);
         if (! $dog) return \PHPWay\Response::page_404("Dog not found");
         $toy_model->delete_dog($id);
@@ -87,7 +87,7 @@ return array(
      * Fetches all dog toys (List action)
      */
     'GET /api/cuddly_toys/monkeys' => function() {
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         return \PHPWay\Response::json($toy_model->monkeys());
     },
 
@@ -95,7 +95,7 @@ return array(
      * Fetches a toy monkey resource (Show action)
      */
     'GET /api/cuddly_toys/monkeys/(\d+)' => function($id) {
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         $monkey = $toy_model->monkey($id);
         if ($monkey)
         {
@@ -120,7 +120,7 @@ return array(
             'energy_level' => 'required',
         ));
         if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         $monkey = $toy_model->create_monkey($params);
         if ($monkey) 
         {
@@ -144,7 +144,7 @@ return array(
             'energy_level' => 'required',
         ));
         if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         $monkey = $toy_model->monkey($id);
         if (! $monkey) return \PHPWay\Response::page_404("Monkey not found");
         return \PHPWay\Response::json($toy_model->update_monkey($id, $params)); 
@@ -154,7 +154,7 @@ return array(
      * Destroys a monkey resource. 
      */
     'DELETE /api/cuddly_toys/monkeys/(\d+)' => function($id) {
-        $toy_model = new MonkeyIsland\Model\Toy;
+        $toy_model = new \MonkeyIsland\Model\Toy;
         $monkey = $toy_model->monkey($id);
         if (! $monkey) return \PHPWay\Response::page_404("Monkey not found");
         $toy_model->delete_monkey($id);
@@ -168,7 +168,7 @@ return array(
      * Fetches all weapon toys (List action)
      */
     'GET /api/weapons' => function() {
-        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon_model = new \MonkeyIsland\Model\Weapon;
         return \PHPWay\Response::json($weapon_model->all());
     },
 
@@ -176,7 +176,7 @@ return array(
      * Fetches a toy weapon resource (Show action)
      */
     'GET /api/weapons/(\d+)' => function($id) {
-        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon_model = new \MonkeyIsland\Model\Weapon;
         $weapon = $weapon_model->get($id);
         if ($weapon)
         {
@@ -201,7 +201,7 @@ return array(
             'power_level' => 'required',
         ));
         if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
-        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon_model = new \MonkeyIsland\Model\Weapon;
         $weapon = $weapon_model->create($params);
         if ($weapon) 
         {
@@ -225,7 +225,7 @@ return array(
             'power_level' => 'required',
         ));
         if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
-        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon_model = new \MonkeyIsland\Model\Weapon;
         $weapon = $weapon_model->get($id);
         if (! $weapon) return \PHPWay\Response::page_404("Weapon not found");
         return \PHPWay\Response::json($weapon_model->update($id, $params)); 
@@ -235,10 +235,19 @@ return array(
      * Destroys a weapon resource. 
      */
     'DELETE /api/weapons/(\d+)' => function($id) {
-        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon_model = new \MonkeyIsland\Model\Weapon;
         $weapon = $weapon_model->get($id);
         if (! $weapon) return \PHPWay\Response::page_404("Weapon not found");
         $weapon_model->delete($id);
         return \PHPWay\Response::json(array('message' => 'Weapon deleted successfully'));
     },
+
+
+
+    // GHOST API
+    'GET /api/ghosts' => function() {
+        $ghost_model = new \MonkeyIsland\Model\Ghost;
+        return \PHPWay\Response::json($ghost_model->all());
+    }
+
 );
