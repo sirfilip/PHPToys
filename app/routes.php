@@ -36,6 +36,11 @@ return array(
      */
     'POST /api/cuddly_toys/dogs' => function() {
         $params = \PHPWay\Input::json();
+        $validation = new \PHPWay\Validation($params, array(
+            'name' => 'required',
+            'energy_level' => 'required',
+        ));
+        if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
         $toy_model = new MonkeyIsland\Model\Toy;
         $dog = $toy_model->create_dog($params);
         if ($dog) 
@@ -55,6 +60,11 @@ return array(
      */
     'PUT /api/cuddly_toys/dogs/(\d+)' => function($id) {
         $params = \PHPWay\Input::json();
+        $validation = new \PHPWay\Validation($params, array(
+            'name' => 'required',
+            'energy_level' => 'required',
+        ));
+        if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
         $toy_model = new MonkeyIsland\Model\Toy;
         $dog = $toy_model->dog($id);
         if (! $dog) return \PHPWay\Response::page_404("Dog not found");
@@ -105,6 +115,11 @@ return array(
      */
     'POST /api/cuddly_toys/monkeys' => function() {
         $params = \PHPWay\Input::json();
+        $validation = new \PHPWay\Validation($params, array(
+            'name' => 'required',
+            'energy_level' => 'required',
+        ));
+        if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
         $toy_model = new MonkeyIsland\Model\Toy;
         $monkey = $toy_model->create_monkey($params);
         if ($monkey) 
@@ -124,6 +139,11 @@ return array(
      */
     'PUT /api/cuddly_toys/monkeys/(\d+)' => function($id) {
         $params = \PHPWay\Input::json();
+        $validation = new \PHPWay\Validation($params, array(
+            'name' => 'required',
+            'energy_level' => 'required',
+        ));
+        if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
         $toy_model = new MonkeyIsland\Model\Toy;
         $monkey = $toy_model->monkey($id);
         if (! $monkey) return \PHPWay\Response::page_404("Monkey not found");

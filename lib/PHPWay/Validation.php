@@ -24,25 +24,36 @@ class Validation
 		
 		return empty($this->_errors);
 	}
-	
-	public function validate_field($field, $rules)
+
+	public function errors()
 	{
-		// example rule required|unique:tablename,id
+		return $this->_errors;
+	}
+	
+	protected function validate_field($field, $rules)
+	{
+		// example rule required|unique,tablename,id
+		if (isset($this->_errors[$field])) return false;
 		$rules = explode('|', $rules);
+		foreach ($rules as $rule)
+		{
+			$chunks = explode(",", $rule);
+			$method = trim(array_shift($chunks));
+			array_unshift($chunks, $field);
+			call_user_func_array(array($this, "_{$method}"), $chunks);
+		}
 	}
 	
-	private function _required($field)
+	protected function _required($field)
 	{
-		
-	}
-	
-	private function _unique($field, $table, $id)
-	{
-		
-	}
-	
-	private function _number($field)
-	{
-		
+		if (isset($this->fields[$field]) and $this->fields[$field] !== '' and $this->fields[$field] !== NULL)
+		{
+			return true;
+		} 
+		else
+		{
+			$this->_errors[$field] = "{$field} is required";
+			return false;
+		}
 	}
 }
