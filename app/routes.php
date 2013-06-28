@@ -103,7 +103,7 @@ return array(
         }
         else
         {
-            return \PHPWay\Response::page_404("Dog not found"); 
+            return \PHPWay\Response::page_404("Monkey not found"); 
         }
     },
 
@@ -161,6 +161,84 @@ return array(
         return \PHPWay\Response::json(array('message' => 'Monkey deleted successfully'));
     },
 
+
     // WEAPONS CRUD API
-    
+
+    /**
+     * Fetches all weapon toys (List action)
+     */
+    'GET /api/weapons' => function() {
+        $weapon_model = new MonkeyIsland\Model\Weapon;
+        return \PHPWay\Response::json($weapon_model->all());
+    },
+
+    /**
+     * Fetches a toy weapon resource (Show action)
+     */
+    'GET /api/weapons/(\d+)' => function($id) {
+        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon = $weapon_model->get($id);
+        if ($weapon)
+        {
+            return \PHPWay\Response::json($weapon);
+        }
+        else
+        {
+            return \PHPWay\Response::page_404("Weapon not found"); 
+        }
+    },
+
+    /** 
+     * Creates a new weapon toy resource
+     * example json input {"name":"Shotgun","power_level": 23}
+     * all additional properties are discarded.
+     * returns a new created resource as json
+     */
+    'POST /api/weapons' => function() {
+        $params = \PHPWay\Input::json();
+        $validation = new \PHPWay\Validation($params, array(
+            'name' => 'required',
+            'power_level' => 'required',
+        ));
+        if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
+        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon = $weapon_model->create($params);
+        if ($weapon) 
+        {
+            return \PHPWay\Response::json($weapon);   
+        }
+        else
+        {
+            return \PHPWay\Response::error(array("message" => 'There was an error in saving the object')); 
+        }
+    },
+
+    /**
+     * Updates an existing weapon toy resource.
+     * If a resource is not found 404 will be returned
+     * example json input {"name": "lasergun", "power_level":123}
+     */
+    'PUT /api/weapons/(\d+)' => function($id) {
+        $params = \PHPWay\Input::json();
+        $validation = new \PHPWay\Validation($params, array(
+            'name' => 'required',
+            'power_level' => 'required',
+        ));
+        if (! $validation->validate()) return \PHPWay\Response::error($validation->errors());
+        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon = $weapon_model->get($id);
+        if (! $weapon) return \PHPWay\Response::page_404("Weapon not found");
+        return \PHPWay\Response::json($weapon_model->update($id, $params)); 
+    },
+
+    /**
+     * Destroys a weapon resource. 
+     */
+    'DELETE /api/weapons/(\d+)' => function($id) {
+        $weapon_model = new MonkeyIsland\Model\Weapon;
+        $weapon = $weapon_model->get($id);
+        if (! $weapon) return \PHPWay\Response::page_404("Weapon not found");
+        $weapon_model->delete($id);
+        return \PHPWay\Response::json(array('message' => 'Weapon deleted successfully'));
+    },
 );
